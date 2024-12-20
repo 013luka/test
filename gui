@@ -1,0 +1,161 @@
+-- Create a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "StormHubGUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create the main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 400, 0, 300) -- Adjusted height for better spacing
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+-- Add rounded corners and a stroke for the frame
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 15)
+uiCorner.Parent = mainFrame
+
+local frameStroke = Instance.new("UIStroke")
+frameStroke.Thickness = 2
+frameStroke.Color = Color3.fromRGB(128, 0, 255) -- Purple border
+frameStroke.Parent = mainFrame
+
+-- Add the logo (top-center position)
+local logo = Instance.new("ImageLabel")
+logo.Size = UDim2.new(0, 100, 0, 100) -- Adjusted size
+logo.Position = UDim2.new(0.5, -50, 0, -50) -- Top-center, slightly above frame
+logo.BackgroundTransparency = 1
+logo.Image = "rbxassetid://17569152189" -- Your asset ID
+logo.Parent = mainFrame
+
+-- Create the header text: "StormHub"
+local header = Instance.new("TextLabel")
+header.Size = UDim2.new(1, 0, 0.2, 0)
+header.Position = UDim2.new(0, 0, 0.15, 0)
+header.BackgroundTransparency = 1
+header.Text = "StormHub"
+header.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+header.TextScaled = true
+header.Font = Enum.Font.GothamBlack -- Modern bold font
+header.Parent = mainFrame
+
+-- Outline effect for header
+local headerOutline = Instance.new("UIStroke")
+headerOutline.Thickness = 2
+headerOutline.Color = Color3.fromRGB(128, 0, 255) -- Purple outline
+headerOutline.Parent = header
+
+-- Sub-header text
+local subHeader = Instance.new("TextLabel")
+subHeader.Size = UDim2.new(1, 0, 0.1, 0)
+subHeader.Position = UDim2.new(0, 0, 0.35, 0)
+subHeader.BackgroundTransparency = 1
+subHeader.Text = "Trade Scam"
+subHeader.TextColor3 = Color3.fromRGB(200, 200, 200) -- Light gray text
+subHeader.TextScaled = true
+subHeader.Font = Enum.Font.GothamBold
+subHeader.Parent = mainFrame
+
+-- ON button
+local onButton = Instance.new("TextButton")
+onButton.Size = UDim2.new(0.4, 0, 0.15, 0)
+onButton.Position = UDim2.new(0.1, 0, 0.6, 0)
+onButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+onButton.Text = "ON"
+onButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+onButton.TextScaled = true
+onButton.Font = Enum.Font.GothamBold
+onButton.Parent = mainFrame
+
+local onCorner = Instance.new("UICorner")
+onCorner.CornerRadius = UDim.new(0, 15)
+onCorner.Parent = onButton
+
+local onStroke = Instance.new("UIStroke")
+onStroke.Thickness = 2
+onStroke.Color = Color3.fromRGB(75, 0, 130)
+onStroke.Parent = onButton
+
+-- OFF button
+local offButton = Instance.new("TextButton")
+offButton.Size = UDim2.new(0.4, 0, 0.15, 0)
+offButton.Position = UDim2.new(0.5, 0, 0.6, 0)
+offButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+offButton.Text = "OFF"
+offButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+offButton.TextScaled = true
+offButton.Font = Enum.Font.GothamBold
+offButton.Parent = mainFrame
+
+local offCorner = Instance.new("UICorner")
+offCorner.CornerRadius = UDim.new(0, 15)
+offCorner.Parent = offButton
+
+local offStroke = Instance.new("UIStroke")
+offStroke.Thickness = 2
+offStroke.Color = Color3.fromRGB(120, 0, 180)
+offStroke.Parent = offButton
+
+-- Credits text
+local credits = Instance.new("TextLabel")
+credits.Size = UDim2.new(1, 0, 0.1, 0)
+credits.Position = UDim2.new(0, 0, 0.85, 0)
+credits.BackgroundTransparency = 1
+credits.Text = "Credits: 013luka for creating StormHub"
+credits.TextColor3 = Color3.fromRGB(170, 170, 255)
+credits.TextScaled = true
+credits.Font = Enum.Font.GothamBold
+credits.Parent = mainFrame
+
+-- ON button functionality
+onButton.MouseButton1Click:Connect(function()
+	onButton.BackgroundColor3 = Color3.fromRGB(75, 0, 130)
+	offButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	subHeader.Text = "Trade Scam: ON"
+	subHeader.TextColor3 = Color3.fromRGB(0, 255, 0)
+	print("Trade Scam ON activated")
+end)
+
+-- OFF button functionality
+offButton.MouseButton1Click:Connect(function()
+	offButton.BackgroundColor3 = Color3.fromRGB(120, 0, 180)
+	onButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	subHeader.Text = "Trade Scam: OFF"
+	subHeader.TextColor3 = Color3.fromRGB(255, 0, 0)
+	print("Trade Scam OFF deactivated")
+end)
+
+-- Draggable functionality
+local dragging, dragInput, dragStart, startPos
+
+mainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		mainFrame.Position = UDim2.new(
+			startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y
+		)
+	end
+end)
